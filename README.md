@@ -96,38 +96,36 @@ sudo ./engine stop beta
 
 ## 📸 Demo with Screenshots
 1. Multi-container supervision
-   <img width="1536" height="1024" alt="os1" src="https://github.com/user-attachments/assets/08a8197f-26de-4824-b03c-1ca5343e8e71" />
+   <img width="1727" height="712" alt="SCREENSHOT 1" src="https://github.com/user-attachments/assets/7f53dca6-9c14-4234-a84b-008df77b5b17" />
    The supervisor engine concurrently managing multiple active containers ('alpha' and 'beta') under a single parent process.
 
 2. Metadata tracking (ps)
-   <img width="1536" height="1024" alt="os2" src="https://github.com/user-attachments/assets/aae9ffc8-7cfe-46ce-ad99-4959212064b5" />
+   <img width="896" height="761" alt="SCREENSHOT 2" src="https://github.com/user-attachments/assets/bf504535-9140-4827-a942-357da81aa328" />
    The CLI 'ps' command querying the supervisor to display dynamically tracked container metadata, including assigned process IDs (PIDs) and states.
    
 3. Bounded-buffer logging
-   <img width="827" height="565" alt="WhatsApp Image 2026-04-15 at 12 06 27" src="https://github.com/user-attachments/assets/96bd0b2a-a478-4b6e-9c3b-b5e9e860a39e" />
+   <img width="2494" height="1560" alt="SCREENSHOT 3" src="https://github.com/user-attachments/assets/eeef4e16-0908-4404-bcd4-4a8d6664f02c" />
    Successful retrieval of container execution logs, verifying that the pipeline's consumer thread is actively capturing and writing standard output to disk.
 
 4. CLI + IPC
-   <img width="952" height="489" alt="image" src="https://github.com/user-attachments/assets/7b816482-46ce-4262-8486-cad275ba9856" />
+   <img width="894" height="749" alt="SCREENSHOT 4" src="https://github.com/user-attachments/assets/0741d738-6702-4a32-9ca6-36c1323610a8" />
    Issuing a control command via the CLI client, which successfully communicates with the background supervisor through the Unix Domain Socket to terminate a container.
 
 5. Soft-limit warning
-   <img width="1263" height="640" alt="image" src="https://github.com/user-attachments/assets/90bcd554-80f8-4790-864b-c32bb773bfba" />
-   <img width="1178" height="625" alt="image" src="https://github.com/user-attachments/assets/7e44fc57-1e01-4599-b028-db9df806b4cd" />
+   <img width="2485" height="567" alt="SCREENSHOT 55" src="https://github.com/user-attachments/assets/94c2758c-45e1-463e-b68f-785236dfc7bc" />
 
    CLI execution starting container 'gamma' with strict memory boundaries to trigger kernel-level monitoring.
 
 6. Hard-limit enforcement
-   <img width="984" height="593" alt="image" src="https://github.com/user-attachments/assets/c8218f4e-f366-4d3a-84e6-5136e9f8ce46" />
+   <img width="2485" height="844" alt="SCREENSHOT 6" src="https://github.com/user-attachments/assets/c4fadb67-f9d9-4ad6-a7d3-39488987943f" />
    The custom Loadable Kernel Module detecting a memory boundary breach by container 'gamma' and successfully enforcing the constraint.
 
 7. Scheduling experiment
-   <img width="1241" height="652" alt="image" src="https://github.com/user-attachments/assets/f12830ab-32d2-4dcb-af07-9ff58da7f494" />
-   <img width="805" height="523" alt="image" src="https://github.com/user-attachments/assets/1a4d1024-76c9-413d-ba27-4a209652eeca" />
+   <img width="1086" height="749" alt="SCREENSHOT 7" src="https://github.com/user-attachments/assets/5650e696-3eb9-43e3-bda7-4b730ee7fb6d" />
    Process monitor confirming that the isolated 'cpu_hog' container is effectively scheduled by the OS and saturating its allocated CPU time slice.
 
 8. Clean teardown
-   <img width="1254" height="646" alt="image" src="https://github.com/user-attachments/assets/0d38fbe5-748d-4a6c-8006-05a68c031027" />
+   <img width="936" height="761" alt="SCREENSHOT 8" src="https://github.com/user-attachments/assets/8cf926a0-3a0d-4cd2-8ed0-06c5a5d1cd97" />
    The supervisor gracefully intercepting a SIGINT (^C) signal, triggering the cleanup routine to close the IPC socket and reap all child processes to prevent zombies.
 
 ## 🔹 Engineering Analysis
