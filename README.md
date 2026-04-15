@@ -45,7 +45,7 @@ sudo dmesg | tail -n 20
 ### 3. Start Supervisor
 
 ```bash
-sudo ./engine supervisor ./rootfs-base
+sudo ./engine supervisor ../rootfs-base
 ```
 
 ---
@@ -53,8 +53,8 @@ sudo ./engine supervisor ./rootfs-base
 ### 4. Prepare Container Root Filesystems
 
 ```bash
-cp -a ./rootfs-base ./rootfs-alpha
-cp -a ./rootfs-base ./rootfs-beta
+sudo cp -a ../rootfs-base ../rootfs-alpha
+sudo cp -a ../rootfs-base ../rootfs-beta
 ```
 
 ---
@@ -62,8 +62,8 @@ cp -a ./rootfs-base ./rootfs-beta
 ### 5. Start Containers
 
 ```bash
-sudo ./engine start alpha ./rootfs-alpha /cpu_hog
-sudo ./engine start beta ./rootfs-beta /io_pulse
+sudo ./engine start alpha ../rootfs-alpha /cpu_hog
+sudo ./engine start beta ../rootfs-beta /io_pulse
 ```
 
 ---
@@ -79,8 +79,7 @@ sudo ./engine ps
 ### 7. View Logs
 
 ```bash
-ls logs
-cat logs/alpha.log
+sudo ./engine logs alpha
 ```
 
 ---
@@ -153,104 +152,52 @@ sudo ./engine stop beta
 
 
 
-### 🔹 Process Isolation
+## Engineering Analysis
 
-Containers are created using Linux namespaces:
+**How The System Works**
 
-* Separate process trees
-* Isolated filesystem environments
-* Independent execution contexts
+We put programs in their own private space. This makes sure they cannot see or touch other programs. We change their root folder so they are locked in.
 
----
+For memory limits we use a kernel module. The kernel is the deep core of the system. It can see exactly how much memory a program uses and kill it instantly if it takes too much. Normal user programs cannot do this safely.
 
-### 🔹 Supervisor Design
+## Design Choices
 
-The supervisor acts as:
+**Isolation**
+Choice - We used Linux namespaces
+Good - It is very fast and lightweight
+Bad - It is not as secure as a full virtual machine
 
-* A central controller for container lifecycle
-* A process manager for spawning and stopping containers
-* A coordinator for logging and monitoring
+**Supervisor**
+Choice - We made one main background program to manage everything
+Good - It makes tracking all the containers very simple
+Bad - If the main program breaks everything breaks
 
----
+**Logging**
+Choice - We used memory buffers and sockets
+Good - The main program does not freeze while waiting for logs to save to the disk
+Bad - It uses a little bit more memory to run
 
-### 🔹 Logging System
+**Kernel Monitor**
+Choice - We wrote custom core kernel code
+Good - It is the only way to perfectly stop memory leaks at the lowest level
+Bad - A mistake in the code can crash the whole computer
 
-* Each container writes to its own log file
-* Output is captured via pipes
-* Logs persist even after container termination
+**Scheduling Tests**
+Choice - We used simple math and sleep programs
+Good - It is very easy to see exactly how the computer shares its time
+Bad - It does not test real world messy programs
 
----
+## Scheduler Test Results
 
-### 🔹 Kernel Monitoring
+Here is what happened when we ran our two test programs at the same time
 
-* Implemented as a Loadable Kernel Module
-* Interacts with user-space runtime
-* Demonstrates kernel-user communication
+**The CPU Hog Program**
+This program does heavy math and never stops
+The system gave it over 90 percent of the processing power
 
----
+**The IO Pulse Program**
+This program does very small tasks and then goes to sleep
+The system gave it almost 0 percent of the processing power
 
-### 🔹 Scheduling Behavior
-
-* CPU-bound processes utilize maximum CPU
-* I/O-bound processes frequently yield CPU
-* Demonstrates real-world Linux scheduling behavior
-
----
-
-## 🔹 Design Decisions & Tradeoffs
-
-### Container Isolation
-
-* **Approach:** Namespace-based
-* **Tradeoff:** Lightweight but less secure than full container runtimes
-
-### Supervisor
-
-* **Approach:** Single process controller
-* **Tradeoff:** Simple design but single point of failure
-
-### Logging
-
-* **Approach:** File-based logging
-* **Tradeoff:** Easy implementation, limited scalability
-
-### Kernel Monitoring
-
-* **Approach:** LKM-based tracking
-* **Tradeoff:** Powerful but increases complexity
-
----
-
-## 🔹 Observations
-
-### CPU vs IO
-
-* `cpu_hog` consumes significantly higher CPU
-* `io_pulse` uses minimal CPU
-
-### System Behavior
-
-* Containers execute and terminate cleanly
-* Logs are consistently generated
-* No zombie processes observed
-
----
-
-##  Notes
-
-* All outputs captured from a Linux VM environment
-* Kernel module successfully loads and initializes
-* Some container commands may exit quickly, but system behavior remains consistent
-
----
-
-##  Conclusion
-
-This project demonstrates a simplified container runtime that integrates:
-
-* Process isolation
-* Logging pipeline
-* Kernel interaction
-* Scheduling behavior
-
-It provides a strong practical understanding of how operating systems manage processes, resources, and execution environments.
+**What This Proves**
+The Linux system is smart. It gives power to the programs doing hard work and takes power away from programs that are resting. This keeps the whole computer running smoothly without freezing.
