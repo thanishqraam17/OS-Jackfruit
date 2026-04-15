@@ -95,41 +95,63 @@ sudo ./engine stop beta
 ---
 
 ## 📸 Demo with Screenshots
-1. Multi-container supervision
-   <img width="1727" height="712" alt="SCREENSHOT 1" src="https://github.com/user-attachments/assets/7f53dca6-9c14-4234-a84b-008df77b5b17" />
-   The supervisor engine concurrently managing multiple active containers ('alpha' and 'beta') under a single parent process.
 
-2. Metadata tracking (ps)
-   <img width="896" height="761" alt="SCREENSHOT 2" src="https://github.com/user-attachments/assets/bf504535-9140-4827-a942-357da81aa328" />
-   The CLI 'ps' command querying the supervisor to display dynamically tracked container metadata, including assigned process IDs (PIDs) and states.
-   
-3. Bounded-buffer logging
-   <img width="2494" height="1560" alt="SCREENSHOT 3" src="https://github.com/user-attachments/assets/eeef4e16-0908-4404-bcd4-4a8d6664f02c" />
-   Successful retrieval of container execution logs, verifying that the pipeline's consumer thread is actively capturing and writing standard output to disk.
+**1. Multi-container supervision**
 
+![SCREENSHOT 1](https://github.com/user-attachments/assets/7f53dca6-9c14-4234-a84b-008df77b5b17)
+> The supervisor engine concurrently managing multiple active containers ('alpha' and 'beta') under a single parent process.
 
-4. CLI + IPC
-   <img width="894" height="749" alt="SCREENSHOT 4" src="https://github.com/user-attachments/assets/0741d738-6702-4a32-9ca6-36c1323610a8" />
-   Issuing a control command via the CLI client, which successfully communicates with the background supervisor through the Unix Domain Socket to terminate a container.
+---
 
-5. Soft-limit warning
-   <img width="2485" height="567" alt="SCREENSHOT 55" src="https://github.com/user-attachments/assets/94c2758c-45e1-463e-b68f-785236dfc7bc" />
+**2. Metadata tracking (ps)**
 
-   CLI execution starting container 'gamma' with strict memory boundaries to trigger kernel-level monitoring.
+![SCREENSHOT 2](https://github.com/user-attachments/assets/bf504535-9140-4827-a942-357da81aa328)
+> The CLI 'ps' command querying the supervisor to display dynamically tracked container metadata, including assigned process IDs (PIDs) and states.
 
-6. Hard-limit enforcement
-   <img width="2485" height="844" alt="SCREENSHOT 6" src="https://github.com/user-attachments/assets/c4fadb67-f9d9-4ad6-a7d3-39488987943f" />
-   The custom Loadable Kernel Module detecting a memory boundary breach by container 'gamma' and successfully enforcing the constraint.
+---
 
-7. Scheduling experiment
-   <img width="1086" height="749" alt="SCREENSHOT 7" src="https://github.com/user-attachments/assets/5650e696-3eb9-43e3-bda7-4b730ee7fb6d" />
-   Process monitor confirming that the isolated 'cpu_hog' container is effectively scheduled by the OS and saturating its allocated CPU time slice.
+**3. Bounded-buffer logging**
 
-8. Clean teardown
-   <img width="936" height="761" alt="SCREENSHOT 8" src="https://github.com/user-attachments/assets/8cf926a0-3a0d-4cd2-8ed0-06c5a5d1cd97" />
-   The supervisor gracefully intercepting a SIGINT (^C) signal, triggering the cleanup routine to close the IPC socket and reap all child processes to prevent zombies.
+![SCREENSHOT 3](https://github.com/user-attachments/assets/eeef4e16-0908-4404-bcd4-4a8d6664f02c)
+> Successful retrieval of container execution logs, verifying that the pipeline's consumer thread is actively capturing and writing standard output to disk.
 
+---
+
+**4. CLI + IPC**
+
+![SCREENSHOT 4](https://github.com/user-attachments/assets/0741d738-6702-4a32-9ca6-36c1323610a8)
+> Issuing a control command via the CLI client, which successfully communicates with the background supervisor through the Unix Domain Socket to terminate a container.
+
+---
+
+**5. Soft-limit warning**
+
+![SCREENSHOT 5](https://github.com/user-attachments/assets/94c2758c-45e1-463e-b68f-785236dfc7bc)
+> CLI execution starting container 'gamma' with strict memory boundaries to trigger kernel-level monitoring.
+
+---
+
+**6. Hard-limit enforcement**
+
+![SCREENSHOT 6](https://github.com/user-attachments/assets/c4fadb67-f9d9-4ad6-a7d3-39488987943f)
+> The custom Loadable Kernel Module detecting a memory boundary breach by container 'gamma' and successfully enforcing the constraint.
+
+---
+
+**7. Scheduling experiment**
+
+![SCREENSHOT 7](https://github.com/user-attachments/assets/5650e696-3eb9-43e3-bda7-4b730ee7fb6d)
+> Process monitor confirming that the isolated 'cpu_hog' container is effectively scheduled by the OS and saturating its allocated CPU time slice.
+
+---
+
+**8. Clean teardown**
+
+![SCREENSHOT 8](https://github.com/user-attachments/assets/8cf926a0-3a0d-4cd2-8ed0-06c5a5d1cd97)
+> The supervisor gracefully intercepting a SIGINT (^C) signal, triggering the cleanup routine to close the IPC socket and reap all child processes to prevent zombies.
 ## 🔹 Engineering Analysis
+
+
 
 ### 🔹 Process Isolation
 
