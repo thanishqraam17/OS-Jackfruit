@@ -107,6 +107,7 @@ sudo ./engine stop beta
    <img width="2494" height="1560" alt="SCREENSHOT 3" src="https://github.com/user-attachments/assets/eeef4e16-0908-4404-bcd4-4a8d6664f02c" />
    Successful retrieval of container execution logs, verifying that the pipeline's consumer thread is actively capturing and writing standard output to disk.
 
+
 4. CLI + IPC
    <img width="894" height="749" alt="SCREENSHOT 4" src="https://github.com/user-attachments/assets/0741d738-6702-4a32-9ca6-36c1323610a8" />
    Issuing a control command via the CLI client, which successfully communicates with the background supervisor through the Unix Domain Socket to terminate a container.
