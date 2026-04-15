@@ -2,8 +2,8 @@
 
 ## 🔹 Team Information
 
-* **Urav B S** — PES1UG24CS507
-* **Uttam B S** — PES1UG24CS508
+* **Thanishq Raam Paatil** — PES1UG24CS502
+* **Varun Rao** — PES1UG24CS520
 
 ---
 
@@ -97,38 +97,38 @@ sudo ./engine stop beta
 ## 📸 Demo with Screenshots
 1. Multi-container supervision
    <img width="1536" height="1024" alt="os1" src="https://github.com/user-attachments/assets/08a8197f-26de-4824-b03c-1ca5343e8e71" />
-   Two containers running concurrently under a single supervisor process
+   The supervisor engine concurrently managing multiple active containers ('alpha' and 'beta') under a single parent process.
 
 2. Metadata tracking (ps)
    <img width="1536" height="1024" alt="os2" src="https://github.com/user-attachments/assets/aae9ffc8-7cfe-46ce-ad99-4959212064b5" />
-   Supervisor maintains metadata including container ID, PID, and state
+   The CLI 'ps' command querying the supervisor to display dynamically tracked container metadata, including assigned process IDs (PIDs) and states.
    
 3. Bounded-buffer logging
    <img width="827" height="565" alt="WhatsApp Image 2026-04-15 at 12 06 27" src="https://github.com/user-attachments/assets/96bd0b2a-a478-4b6e-9c3b-b5e9e860a39e" />
-   Container output captured through bounded-buffer logging pipeline
+   Successful retrieval of container execution logs, verifying that the pipeline's consumer thread is actively capturing and writing standard output to disk.
 
 4. CLI + IPC
    <img width="952" height="489" alt="image" src="https://github.com/user-attachments/assets/7b816482-46ce-4262-8486-cad275ba9856" />
-   CLI communicates with supervisor via IPC mechanism
+   Issuing a control command via the CLI client, which successfully communicates with the background supervisor through the Unix Domain Socket to terminate a container.
 
 5. Soft-limit warning
    <img width="1263" height="640" alt="image" src="https://github.com/user-attachments/assets/90bcd554-80f8-4790-864b-c32bb773bfba" />
    <img width="1178" height="625" alt="image" src="https://github.com/user-attachments/assets/7e44fc57-1e01-4599-b028-db9df806b4cd" />
 
-   Soft memory limit exceeded triggers warning without terminating container
+   CLI execution starting container 'gamma' with strict memory boundaries to trigger kernel-level monitoring.
 
 6. Hard-limit enforcement
    <img width="984" height="593" alt="image" src="https://github.com/user-attachments/assets/c8218f4e-f366-4d3a-84e6-5136e9f8ce46" />
-   Hard memory limit enforcement terminates container process
+   The custom Loadable Kernel Module detecting a memory boundary breach by container 'gamma' and successfully enforcing the constraint.
 
 7. Scheduling experiment
    <img width="1241" height="652" alt="image" src="https://github.com/user-attachments/assets/f12830ab-32d2-4dcb-af07-9ff58da7f494" />
    <img width="805" height="523" alt="image" src="https://github.com/user-attachments/assets/1a4d1024-76c9-413d-ba27-4a209652eeca" />
-   Linux scheduler prioritizes lower nice value (higher priority) container
+   Process monitor confirming that the isolated 'cpu_hog' container is effectively scheduled by the OS and saturating its allocated CPU time slice.
 
 8. Clean teardown
    <img width="1254" height="646" alt="image" src="https://github.com/user-attachments/assets/0d38fbe5-748d-4a6c-8006-05a68c031027" />
-   All containers terminated cleanly with no zombie processes remaining
+   The supervisor gracefully intercepting a SIGINT (^C) signal, triggering the cleanup routine to close the IPC socket and reap all child processes to prevent zombies.
 
 ## 🔹 Engineering Analysis
 
