@@ -148,11 +148,10 @@ sudo ./engine stop beta
 
 ![SCREENSHOT 8](https://github.com/user-attachments/assets/8cf926a0-3a0d-4cd2-8ed0-06c5a5d1cd97)
 > The supervisor gracefully intercepting a SIGINT (^C) signal, triggering the cleanup routine to close the IPC socket and reap all child processes to prevent zombies.
+
+---
+
 ## 🔹 Engineering Analysis
-
-
-
-## Engineering Analysis
 
 **How The System Works**
 
@@ -160,7 +159,7 @@ We put programs in their own private space. This makes sure they cannot see or t
 
 For memory limits we use a kernel module. The kernel is the deep core of the system. It can see exactly how much memory a program uses and kill it instantly if it takes too much. Normal user programs cannot do this safely.
 
-## Design Choices
+## 🔹 Design Choices
 
 **Isolation**
 Choice - We used Linux namespaces
@@ -187,7 +186,7 @@ Choice - We used simple math and sleep programs
 Good - It is very easy to see exactly how the computer shares its time
 Bad - It does not test real world messy programs
 
-## Scheduler Test Results
+## 🔹 Scheduler Test Results
 
 Here is what happened when we ran our two test programs at the same time
 
@@ -201,3 +200,10 @@ The system gave it almost 0 percent of the processing power
 
 **What This Proves**
 The Linux system is smart. It gives power to the programs doing hard work and takes power away from programs that are resting. This keeps the whole computer running smoothly without freezing.
+
+## 🔹 Conclusion
+
+This project builds a real working container system from scratch
+It brings together process separation and custom logging
+It also links user space programs with a real Linux kernel module
+Building this showed exactly how an operating system controls memory and processes behind the scenes
